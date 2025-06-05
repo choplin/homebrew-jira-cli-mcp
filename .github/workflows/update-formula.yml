@@ -1,0 +1,62 @@
+name: Update Formula
+
+on:
+  repository_dispatch:
+    types: [formula-update]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-formula:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update formula
+        run: |
+          VERSION="${{ github.event.client_payload.version }}"
+          SHA256_DARWIN_ARM64="${{ github.event.client_payload.sha256_darwin_arm64 }}"
+          SHA256_DARWIN_X64="${{ github.event.client_payload.sha256_darwin_x64 }}"
+          SHA256_LINUX_ARM64="${{ github.event.client_payload.sha256_linux_arm64 }}"
+          SHA256_LINUX_X64="${{ github.event.client_payload.sha256_linux_x64 }}"
+
+          # Update version
+          sed -i "s/version \".*\"/version \"$VERSION\"/" jira-cli-mcp.rb
+
+          # Update URLs
+          sed -i "s|download/v[0-9.]*|download/v$VERSION|g" jira-cli-mcp.rb
+
+          # Update SHA256 values
+          sed -i "s/sha256 \"[a-f0-9]*\" # darwin-arm64/sha256 \"$SHA256_DARWIN_ARM64\" # darwin-arm64/" jira-cli-mcp.rb
+          sed -i "s/sha256 \"[a-f0-9]*\" # darwin-x64/sha256 \"$SHA256_DARWIN_X64\" # darwin-x64/" jira-cli-mcp.rb
+          sed -i "s/sha256 \"[a-f0-9]*\" # linux-arm64/sha256 \"$SHA256_LINUX_ARM64\" # linux-arm64/" jira-cli-mcp.rb
+          sed -i "s/sha256 \"[a-f0-9]*\" # linux-x64/sha256 \"$SHA256_LINUX_X64\" # linux-x64/" jira-cli-mcp.rb
+
+      - name: Test formula syntax
+        run: |
+          # Basic Ruby syntax check
+          ruby -c jira-cli-mcp.rb
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: update formula to v${{ github.event.client_payload.version }}"
+          title: "Update formula to v${{ github.event.client_payload.version }}"
+          body: |
+            Automated update from jira-cli-mcp release v${{ github.event.client_payload.version }}
+
+            ## SHA256 Checksums
+            - darwin-arm64: `${{ github.event.client_payload.sha256_darwin_arm64 }}`
+            - darwin-x64: `${{ github.event.client_payload.sha256_darwin_x64 }}`
+            - linux-arm64: `${{ github.event.client_payload.sha256_linux_arm64 }}`
+            - linux-x64: `${{ github.event.client_payload.sha256_linux_x64 }}`
+
+            ## Release Notes
+            See: https://github.com/choplin/jira-cli-mcp/releases/tag/v${{ github.event.client_payload.version }}
+          branch: update-v${{ github.event.client_payload.version }}
+          delete-branch: true
+
