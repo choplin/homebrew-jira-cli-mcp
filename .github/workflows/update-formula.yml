@@ -32,11 +32,11 @@ jobs:
           # Update URLs (with 'v' prefix) - handle both 'v' and 'vv' cases
           sed -i "s|download/v\{1,2\}[0-9.]*|download/$VERSION|g" jira-cli-mcp.rb
 
-          # Update SHA256 values - also handle PLACEHOLDER_SHA256_* for initial formula
-          sed -i "s/sha256 \"[a-f0-9A-F_]*\" # darwin-arm64/sha256 \"$SHA256_DARWIN_ARM64\" # darwin-arm64/" jira-cli-mcp.rb
-          sed -i "s/sha256 \"[a-f0-9A-F_]*\" # darwin-x64/sha256 \"$SHA256_DARWIN_X64\" # darwin-x64/" jira-cli-mcp.rb
-          sed -i "s/sha256 \"[a-f0-9A-F_]*\" # linux-arm64/sha256 \"$SHA256_LINUX_ARM64\" # linux-arm64/" jira-cli-mcp.rb
-          sed -i "s/sha256 \"[a-f0-9A-F_]*\" # linux-x64/sha256 \"$SHA256_LINUX_X64\" # linux-x64/" jira-cli-mcp.rb
+          # Update SHA256 values - handle both real hashes and PLACEHOLDER_* values
+          sed -i "s/sha256 \"[^\"]*\" # darwin-arm64/sha256 \"$SHA256_DARWIN_ARM64\" # darwin-arm64/" jira-cli-mcp.rb
+          sed -i "s/sha256 \"[^\"]*\" # darwin-x64/sha256 \"$SHA256_DARWIN_X64\" # darwin-x64/" jira-cli-mcp.rb
+          sed -i "s/sha256 \"[^\"]*\" # linux-arm64/sha256 \"$SHA256_LINUX_ARM64\" # linux-arm64/" jira-cli-mcp.rb
+          sed -i "s/sha256 \"[^\"]*\" # linux-x64/sha256 \"$SHA256_LINUX_X64\" # linux-x64/" jira-cli-mcp.rb
 
       - name: Test formula syntax
         run: |
