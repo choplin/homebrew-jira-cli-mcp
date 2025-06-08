@@ -1,26 +1,26 @@
 class JiraCliMcp < Formula
   desc "MCP server that wraps jira-cli for AI assistants"
   homepage "https://github.com/choplin/jira-cli-mcp"
-  version "0.3.0"
+  version "0.4.0"
   license "Apache-2.0"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/choplin/jira-cli-mcp/releases/download/v0.3.0/jira-cli-mcp-darwin-arm64.tar.gz"
-      sha256 "735b7e24a569c7bc9f26827fc9b559f82db6947b5706909e330e1732b39d2712" # darwin-arm64
+      url "https://github.com/choplin/jira-cli-mcp/releases/download/v0.4.0/jira-cli-mcp-darwin-arm64.tar.gz"
+      sha256 "f271edf4bddb0887139f7da786d731310ab2f342ad94ad1c2ffef34e5d52484a" # darwin-arm64
     else
-      url "https://github.com/choplin/jira-cli-mcp/releases/download/v0.3.0/jira-cli-mcp-darwin-x64.tar.gz"
-      sha256 "c4828c8e776dd9aea7430e36032d67513a3d36fcd72360803d098864d4b971e1" # darwin-x64
+      url "https://github.com/choplin/jira-cli-mcp/releases/download/v0.4.0/jira-cli-mcp-darwin-x64.tar.gz"
+      sha256 "e8db668137cad1b6bc842f667a7f8ef77db35b1892a3f2365b9dceb24064aadd" # darwin-x64
     end
   end
 
   on_linux do
     if Hardware::CPU.arm?
-      url "https://github.com/choplin/jira-cli-mcp/releases/download/v0.3.0/jira-cli-mcp-linux-arm64.tar.gz"
-      sha256 "b4e37ac43611e93ff3a237ac47f449109260da4b0b82a11c76969de20dc02cec" # linux-arm64
+      url "https://github.com/choplin/jira-cli-mcp/releases/download/v0.4.0/jira-cli-mcp-linux-arm64.tar.gz"
+      sha256 "9d90149539fcd61a24a8fe834beddb218a58a417e64f480b8b2729d8ceea54e2" # linux-arm64
     else
-      url "https://github.com/choplin/jira-cli-mcp/releases/download/v0.3.0/jira-cli-mcp-linux-x64.tar.gz"
-      sha256 "ac22fcec61803f7556b49227fd08b117c034a1270622a9c3dc09aa48ecab5a05" # linux-x64
+      url "https://github.com/choplin/jira-cli-mcp/releases/download/v0.4.0/jira-cli-mcp-linux-x64.tar.gz"
+      sha256 "9419535462bdd338bce245f9a8dfb8298120aedc8bde659ce507a1be2872ec9c" # linux-x64
     end
   end
 
